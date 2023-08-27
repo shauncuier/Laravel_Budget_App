@@ -82,6 +82,12 @@ class TransactionResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
+    public static function getWidgets(): array
+    {
+        return [
+            TransactionResource\Widgets\TransactionOverview::class
+        ];
+    }
 
     public static function getRelations(): array
     {
