@@ -9,4 +9,10 @@ use Filament\Resources\Pages\ViewRecord;
 class ViewCategory extends ViewRecord
 {
     protected static string $resource = CategoryResource::class;
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            CategoryResource\Widgets\CategoryTransactionOverview::class
+        ];
+    }
 }

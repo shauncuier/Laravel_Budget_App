@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Filament\Resources;
+//namespace App\Filament\Widgets;
 
+use App\Filament\Resources\CategoryResource\Widgets;
 use Filament\Support\Enums\FontWeight;
 use App\Filament\Resources\CategoryResource\{Pages, RelationManagers};
 use App\Models\Category;
@@ -66,13 +68,19 @@ class CategoryResource extends Resource
             ]);
     }
 
-public static function getRelations(): array
-{
-    return[
-        RelationManagers\TransactionRelationManager::class
-    ];
-}
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\TransactionRelationManager::class
+        ];
+    }
 
+    public static function getWidgets(): array
+    {
+        return[
+                Widgets\CategoryTransactionOverview::class
+        ];
+    }
 
     public static function infolist(Infolist $infolist): Infolist
     {
