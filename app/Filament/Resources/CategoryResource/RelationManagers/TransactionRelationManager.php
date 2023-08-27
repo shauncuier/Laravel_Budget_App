@@ -6,6 +6,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -29,17 +33,28 @@ class TransactionRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('amount')
             ->columns([
-                Tables\Columns\TextColumn::make('amount'),
+                TextColumn::make('amount')
+                ->numeric()
+                ->sortable()
+                ->money(),
+                TextColumn::make('description'),
+                TextColumn::make('created_at')
+                    ->dateTime('D, d M Y H:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+
+
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -10,6 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -64,6 +65,13 @@ class CategoryResource extends Resource
                 Tables\Actions\CreateAction::make(),
             ]);
     }
+
+public static function getRelations(): array
+{
+    return[
+        RelationManagers\TransactionRelationManager::class
+    ];
+}
 
 
     public static function infolist(Infolist $infolist): Infolist
