@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
+use Filament\Support\Enums\FontWeight;
+use App\Filament\Resources\CategoryResource\{Pages, RelationManagers};
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+
 
 class CategoryResource extends Resource
 {
@@ -25,7 +28,7 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                TextInput::make('name')->required()
             ]);
     }
 
@@ -33,12 +36,22 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('name')->sortable()->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime('D, d M Y H:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime('D, d M Y H:i A')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -52,10 +65,21 @@ class CategoryResource extends Resource
             ]);
     }
 
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist->schema([
+            TextEntry::make('name')
+                ->size(TextEntry\TextEntrySize::Large)
+                ->weight(FontWeight::ExtraBold)
+        ]);
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ManageCategories::route('/'),
+            'view' => Pages\ViewCategory::route('/{record}')
         ];
     }
 }
